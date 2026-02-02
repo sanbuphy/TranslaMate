@@ -19,7 +19,7 @@
 
 ---
 
-## ✨ TranslaMate 是什么？
+## TranslaMate 是什么？
 
 TranslaMate 是一个**统一的翻译解决方案**，将现代化的桌面应用与强大的命令行界面相结合。通过 **GUI 和 CLI** 两种方式，为您提供一致、简单的 AI 翻译体验。
 
@@ -34,22 +34,22 @@ translamate translate "Hello World" --to zh-CN
 
 ---
 
-## 🎯 核心特性
+## 核心特性
 
 | 特性 | 说明 |
 |------|------|
-| 🖥️ **双界面** | 同时支持桌面 GUI 和命令行 CLI |
-| 🔌 **通用 API** | 兼容任何 OpenAI 格式的提供商 |
-| 🚀 **一键安装** | `npm install -g translamate` 即可使用 |
-| 📁 **批量处理** | 一条命令翻译整个文件夹 |
-| 🌐 **10+ 语言** | 自动检测 + 手动选择源语言 |
-| ⚙️ **灵活配置** | 支持 `.env`、JSON 配置或直接传参 |
-| 📦 **零依赖** | 单二进制文件，无需运行时依赖 |
-| 🔒 **隐私优先** | 所有数据本地存储 |
+| **双界面** | 同时支持桌面 GUI 和命令行 CLI |
+| **通用 API** | 兼容任何 OpenAI 格式的提供商 |
+| **一键安装** | `npm install -g translamate` 即可使用 |
+| **批量处理** | 一条命令翻译整个文件夹 |
+| **10+ 语言** | 自动检测 + 手动选择源语言 |
+| **灵活配置** | 支持 `.env`、JSON 配置或直接传参 |
+| **零依赖** | 单二进制文件，无需运行时依赖 |
+| **隐私优先** | 所有数据本地存储 |
 
 ---
 
-## 🚀 快速开始
+## 快速开始
 
 ### 桌面应用
 
@@ -108,9 +108,9 @@ translamate batch ./docs --to zh-CN --output ./docs-zh
 
 ---
 
-## 📖 使用示例
+## 使用示例
 
-### 🤖 桌面应用
+### 桌面应用
 
 ```
 1. 打开 TranslaMate（或按 Ctrl/Cmd+Shift+T）
@@ -120,7 +120,7 @@ translamate batch ./docs --to zh-CN --output ./docs-zh
 5. 在侧边栏查看历史记录
 ```
 
-### 💻 命令行界面
+### 命令行界面
 
 ```bash
 # 查看所有命令
@@ -145,7 +145,7 @@ translamate config list
 
 ---
 
-## 📋 支持的提供商
+## 支持的提供商
 
 ### AI 翻译提供商
 
@@ -158,7 +158,7 @@ translamate config list
 
 ---
 
-## 🌐 支持的语言
+## 支持的语言
 
 | 语言 | 代码 | 语言 | 代码 |
 |------|------|------|------|
@@ -172,7 +172,7 @@ translamate config list
 
 ---
 
-## ⚙️ 配置
+## 配置
 
 ### 方式 1：环境变量（推荐）
 
@@ -222,7 +222,7 @@ translamate config list
 
 ---
 
-## 🛠️ 开发
+## 开发
 
 ### 环境要求
 
@@ -271,7 +271,7 @@ npm run build:all
 
 ---
 
-## 📚 文档
+## 文档
 
 - [快速开始指南](docs/QUICKSTART.md) - 5 分钟上手
 - [CLI 文档](docs/CLI.md) - 完整 CLI 参考
@@ -283,7 +283,7 @@ npm run build:all
 
 ---
 
-## 🗺️ 路线图
+## 路线图
 
 - [ ] PDF 和 DOCX 批量翻译支持
 - [ ] 翻译记忆库和术语表
@@ -295,7 +295,7 @@ npm run build:all
 
 ---
 
-## 🤝 贡献
+## 贡献
 
 欢迎贡献！参与步骤：
 
@@ -315,7 +315,7 @@ npm run build:all
 
 ---
 
-## 📊 项目统计
+## 项目统计
 
 <div align="center">
 
@@ -325,27 +325,27 @@ npm run build:all
 
 ---
 
-## 📄 许可证
+## 许可证
 
 本项目采用 **MIT 许可证** - 详见 [LICENSE](LICENSE) 文件。
 
 ---
 
-## 🙏 致谢
+## 致谢
 
 感谢所有 AI 提供商提供的优秀 API：
 
-[DeepSeek](https://www.deepseek.com/) • [OpenAI](https://openai.com/) • [SiliconFlow](https://cloud.siliconflow.cn/) • [Ollama](https://ollama.com/)
+[DeepSeek](https://www.deepseek.com/) · [OpenAI](https://openai.com/) · [SiliconFlow](https://cloud.siliconflow.cn/) · [Ollama](https://ollama.com/)
 
 特别感谢开源社区提供的工具：
-[Electron](https://www.electronjs.org/) • [React](https://react.dev/) • [Vite](https://vitejs.dev/) • [Tailwind CSS](https://tailwindcss.com/)
+[Electron](https://www.electronjs.org/) · [React](https://react.dev/) · [Vite](https://vitejs.dev/) · [Tailwind CSS](https://tailwindcss.com/)
 
 ---
 
 <div align="center">
 
-**⭐ 在 GitHub 上给我们点星 — 这对我们是很大的鼓励！**
+**在 GitHub 上给我们点星 — 这对我们是很大的鼓励！**
 
-[报告 Bug](https://github.com/sanbuphy/translamate/issues) • [功能建议](https://github.com/sanbuphy/translamate/issues) • [文档](https://github.com/sanbuphy/translamate/tree/main/docs)
+[报告 Bug](https://github.com/sanbuphy/translamate/issues) · [功能建议](https://github.com/sanbuphy/translamate/issues) · [文档](https://github.com/sanbuphy/translamate/tree/main/docs)
 
 </div>

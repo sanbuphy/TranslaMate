@@ -19,7 +19,7 @@
 
 ---
 
-## ✨ What is TranslaMate?
+## What is TranslaMate?
 
 TranslaMate is a **unified translation solution** that combines a modern desktop application with a powerful command-line interface. Access AI-powered translation through **both GUI and CLI** with a consistent, simple experience.
 
@@ -34,22 +34,22 @@ translamate translate "Hello World" --to zh-CN
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
 | Feature | Description |
 |---------|-------------|
-| 🖥️ **Dual Interface** | Both Desktop GUI and Command Line Interface |
-| 🔌 **Universal API** | Works with any OpenAI-compatible provider |
-| 🚀 **One-Line Setup** | `npm install -g translamate` and you're ready |
-| 📁 **Batch Processing** | Translate entire folders with one command |
-| 🌐 **10+ Languages** | Auto-detection + manual source selection |
-| ⚙️ **Flexible Config** | `.env`, JSON config, or direct parameters |
-| 📦 **Zero Dependencies** | Single binary, no runtime dependencies |
-| 🔒 **Privacy First** | All data stored locally |
+| **Dual Interface** | Both Desktop GUI and Command Line Interface |
+| **Universal API** | Works with any OpenAI-compatible provider |
+| **One-Line Setup** | `npm install -g translamate` and you're ready |
+| **Batch Processing** | Translate entire folders with one command |
+| **10+ Languages** | Auto-detection + manual source selection |
+| **Flexible Config** | `.env`, JSON config, or direct parameters |
+| **Zero Dependencies** | Single binary, no runtime dependencies |
+| **Privacy First** | All data stored locally |
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Desktop App
 
@@ -108,9 +108,9 @@ translamate batch ./docs --to zh-CN --output ./docs-zh
 
 ---
 
-## 📖 Usage Examples
+## Usage Examples
 
-### 🤖 Desktop Application
+### Desktop Application
 
 ```
 1. Open TranslaMate (or press Ctrl/Cmd+Shift+T)
@@ -120,7 +120,7 @@ translamate batch ./docs --to zh-CN --output ./docs-zh
 5. View history in the sidebar
 ```
 
-### 💻 Command Line Interface
+### Command Line Interface
 
 ```bash
 # List all commands
@@ -145,7 +145,7 @@ translamate config list
 
 ---
 
-## 📋 Supported Providers
+## Supported Providers
 
 ### AI Translation Providers
 
@@ -158,7 +158,7 @@ translamate config list
 
 ---
 
-## 🌐 Supported Languages
+## Supported Languages
 
 | Language | Code | Language | Code |
 |----------|------|----------|------|
@@ -172,7 +172,7 @@ translamate config list
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Option 1: Environment Variables (Recommended)
 
@@ -222,7 +222,7 @@ translamate config list
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Prerequisites
 
@@ -271,7 +271,7 @@ npm run build:all
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 - [Quick Start Guide](docs/QUICKSTART.md) - Get started in 5 minutes
 - [CLI Documentation](docs/CLI.md) - Complete CLI reference
@@ -283,7 +283,7 @@ npm run build:all
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] PDF and DOCX support for batch translation
 - [ ] Translation memory and glossary
@@ -295,7 +295,7 @@ npm run build:all
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how to get started:
 
@@ -315,7 +315,7 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 📊 Project Stats
+## Project Stats
 
 <div align="center">
 
@@ -325,27 +325,27 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Thanks to all the AI providers for their amazing APIs:
 
-[DeepSeek](https://www.deepseek.com/) • [OpenAI](https://openai.com/) • [SiliconFlow](https://cloud.siliconflow.cn/) • [Ollama](https://ollama.com/)
+[DeepSeek](https://www.deepseek.com/) · [OpenAI](https://openai.com/) · [SiliconFlow](https://cloud.siliconflow.cn/) · [Ollama](https://ollama.com/)
 
 Special thanks to the open-source community for the tools that make this project possible:
-[Electron](https://www.electronjs.org/) • [React](https://react.dev/) • [Vite](https://vitejs.dev/) • [Tailwind CSS](https://tailwindcss.com/)
+[Electron](https://www.electronjs.org/) · [React](https://react.dev/) · [Vite](https://vitejs.dev/) · [Tailwind CSS](https://tailwindcss.com/)
 
 ---
 
 <div align="center">
 
-**⭐ Star us on GitHub — it motivates us a lot!**
+**Star us on GitHub — it motivates us a lot!**
 
-[Report Bug](https://github.com/sanbuphy/translamate/issues) • [Request Feature](https://github.com/sanbuphy/translamate/issues) • [Documentation](https://github.com/sanbuphy/translamate/tree/main/docs)
+[Report Bug](https://github.com/sanbuphy/translamate/issues) · [Request Feature](https://github.com/sanbuphy/translamate/issues) · [Documentation](https://github.com/sanbuphy/translamate/tree/main/docs)
 
 </div>

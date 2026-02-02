@@ -69,7 +69,7 @@ async function setConfigValue(setOption: string): Promise<void> {
   const configPath = path.join(process.cwd(), 'translamate.json');
   
   // Update config
-  (config as Record<string, unknown>)[key] = parseValue(value);
+  (config as unknown as Record<string, unknown>)[key] = parseValue(value);
   
   saveConfig(config, configPath);
   console.log(`Set ${key} = ${value}`);
@@ -77,7 +77,7 @@ async function setConfigValue(setOption: string): Promise<void> {
 
 async function getConfigValue(key: string): Promise<void> {
   const config = loadConfig();
-  const value = (config as Record<string, unknown>)[key];
+  const value = (config as unknown as Record<string, unknown>)[key];
   
   if (value === undefined) {
     console.log(`${key}: not set`);
