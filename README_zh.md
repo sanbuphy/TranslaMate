@@ -1,320 +1,228 @@
-<p align="center">
-  <a href="README.md"><img alt="English" src="https://img.shields.io/badge/English-d9d9d9"></a>
-  <a href="#简体中文"><img alt="简体中文" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
-</p>
+<div align="center">
+
+<img src="assets/logo.png" alt="TranslaMate Logo" width="120" height="120">
 
 # TranslaMate
 
-<p align="center">
-  <img src="assets/logo.png" alt="TranslaMate Logo" width="200">
-</p>
+**AI 驱动的桌面 / 命令行翻译应用**
 
-<p align="center">
-  <b>TranslaMate</b> - 一个优雅的 AI 智能翻译桌面应用
-</p>
+[![GitHub release](https://img.shields.io/github/v/release/sanbuphy/translamate?style=flat-square)](https://github.com/sanbuphy/translamate/releases)
+[![License](https://img.shields.io/github/license/sanbuphy/translamate?style=flat-square)](LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/sanbuphy/translamate/build.yml?style=flat-square)](https://github.com/sanbuphy/translamate/actions)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-blue?style=flat-square)](https://nodejs.org/)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=flat-square)]()
+[![Downloads](https://img.shields.io/github/downloads/sanbuphy/translamate/total?style=flat-square)]()
 
-<p align="center">
-  <a href="https://github.com/username/translamate/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/username/translamate"></a>
-  <a href="https://github.com/username/translamate/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
-  <a href="https://github.com/username/translamate/actions"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/username/translamate/build.yml?branch=main"></a>
-  <a href="https://github.com/username/translamate"><img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey"></a>
-</p>
+[English](README.md) · [简体中文](README_zh.md)
+
+</div>
 
 ---
 
-## 目录
+## ✨ TranslaMate 是什么？
 
-- [功能特性](#功能特性)
-- [安装](#安装)
-  - [环境要求](#环境要求)
-  - [从源码构建](#从源码构建)
-  - [下载发布版本](#下载发布版本)
-- [快速开始](#快速开始)
-  - [首次使用](#首次使用)
-  - [配置](#配置)
-  - [单文本翻译](#单文本翻译)
-  - [批量文件翻译](#批量文件翻译)
-  - [翻译历史](#翻译历史)
-  - [键盘快捷键](#键盘快捷键)
-- [详细配置](#详细配置)
-- [支持的语言](#支持的语言)
-- [开发](#开发)
-- [贡献](#贡献)
-- [常见问题](#常见问题)
-- [更新日志](#更新日志)
-- [许可证](#许可证)
+TranslaMate 是一个**统一的翻译解决方案**，将现代化的桌面应用与强大的命令行界面相结合。通过 **GUI 和 CLI** 两种方式，为您提供一致、简单的 AI 翻译体验。
 
----
-
-## 功能特性
-
-- 🤖 **AI 驱动翻译** - 支持任何 OpenAI 兼容的 API（DeepSeek、OpenAI 等）
-- 🚀 **实时翻译** - 即时翻译，流畅的用户体验
-- 📝 **批量文件翻译** - 支持批量翻译 Markdown 文件，实时查看进度
-- 🎨 **精美现代 UI** - 清爽的界面设计，支持深色模式
-- 🔒 **隐私优先** - 所有数据本地存储，仅向配置的提供商发送 API 请求
-- 🌍 **多语言支持** - 支持 10+ 种主要世界语言
-- 📚 **翻译历史** - 自动保存翻译历史到本地
-- ⌨️ **全局快捷键** - 可自定义的键盘快捷键快速访问
-- 📦 **跨平台** - 原生支持 Windows 和 macOS
-- 🔄 **语言检测** - 自动检测源语言
-- 📋 **一键复制** - 一键复制翻译结果
-
----
-
-## 安装
-
-### 环境要求
-
-- **Node.js** >= 18
-- **npm** >= 9 或 **pnpm** >= 8
-- 受支持提供商的 API Key（参见[配置](#配置)）
-
-### 从源码构建
+告别在不同翻译工具之间切换的烦恼。无论是翻译一句话还是处理数千份文档，一个应用搞定一切。
 
 ```bash
-# 克隆仓库
-git clone https://github.com/username/translamate.git
-cd translamate
+# CLI：一行命令翻译
+translamate translate "Hello World" --to zh-CN
 
-# 安装依赖
-npm install
-
-# 启动开发模式
-npm run dev
-
-# 构建生产版本
-npm run build:all
+# 桌面端：随处按 Ctrl+Shift+T
 ```
-
-构建产物将在 `out/` 目录中。
-
-### 下载发布版本
-
-预构建的二进制文件可在 [Releases](https://github.com/username/translamate/releases) 页面获取。
-
-**Windows：**
-- 下载 `TranslaMate Setup X.Y.Z.exe`
-- 运行安装程序
-
-**macOS：**
-- 下载 `TranslaMate-X.Y.Z.dmg` (Intel) 或 `TranslaMate-X.Y.Z-arm64.dmg` (Apple Silicon)
-- 打开 DMG 文件并将 TranslaMate 拖到应用程序文件夹
 
 ---
 
-## 快速开始
+## 🎯 核心特性
 
-### 首次使用
+| 特性 | 说明 |
+|------|------|
+| 🖥️ **双界面** | 同时支持桌面 GUI 和命令行 CLI |
+| 🔌 **通用 API** | 兼容任何 OpenAI 格式的提供商 |
+| 🚀 **一键安装** | `npm install -g translamate` 即可使用 |
+| 📁 **批量处理** | 一条命令翻译整个文件夹 |
+| 🌐 **10+ 语言** | 自动检测 + 手动选择源语言 |
+| ⚙️ **灵活配置** | 支持 `.env`、JSON 配置或直接传参 |
+| 📦 **零依赖** | 单二进制文件，无需运行时依赖 |
+| 🔒 **隐私优先** | 所有数据本地存储 |
 
-1. 启动 TranslaMate
-2. 点击 **设置**（⚙️ 图标）
-3. 输入你的 API Key（详细说明参见[配置](#配置)）
-4. 点击 **保存设置**
+---
 
-### 配置
+## 🚀 快速开始
 
-TranslaMate 支持任何 OpenAI 兼容的 API。默认配置为 DeepSeek。
+### 桌面应用
 
-**设置选项：**
+**macOS (Homebrew)：**
+```bash
+brew install --cask translamate
+```
 
-| 设置 | 说明 | 默认值 |
-|------|------|--------|
-| API Key | 提供商的 API 密钥 | *必需* |
-| API Base URL | API 端点 URL | `https://api.deepseek.com` |
-| Model Name | 用于翻译的模型 | `deepseek-chat` |
-| Max Tokens | 响应的最大令牌数 | `512` |
-| Temperature | 采样温度 (0.0-2.0) | `0.7` |
+**Windows (Scoop)：**
+```powershell
+scoop install translamate
+```
 
-**推荐的提供商：**
+**或直接下载：**
+- [最新版本](https://github.com/sanbuphy/translamate/releases/latest)
 
-<details>
-<summary><b>DeepSeek（推荐 - 价格实惠、速度快）</b></summary>
+### CLI 安装
 
-- **API Key**：从 [https://platform.deepseek.com](https://platform.deepseek.com) 获取
-- **Base URL**：`https://api.deepseek.com`
-- **模型**：`deepseek-chat`、`deepseek-reasoner`
-- **价格**：约 ¥1 / 100万 tokens
+```bash
+# 全局安装
+npm install -g translamate
 
-</details>
+# 或使用 npx（无需安装）
+npx translamate translate "Hello" --to zh-CN
+```
 
-<details>
-<summary><b>OpenAI</b></summary>
+### 1. 设置 API Key
 
-- **API Key**：从 [https://platform.openai.com](https://platform.openai.com) 获取
-- **Base URL**：`https://api.openai.com/v1`
-- **模型**：`gpt-4`、`gpt-3.5-turbo`、`gpt-4-turbo` 等
+```bash
+# 创建 .env 文件
+echo 'TRANSLAMATE_API_KEY=your_key_here' > .env
 
-</details>
+# 或使用配置命令
+translamate config set apiKey your_key_here
+```
 
-<details>
-<summary><b>其他提供商</b></summary>
+### 2. 开始翻译
 
-任何 OpenAI 兼容的 API 都可以通过配置相应的 Base URL 和模型名称来使用。
+**桌面端：**
+```
+Ctrl/Cmd + Shift + T  →  显示 TranslaMate
+Ctrl/Cmd + Enter      →  执行翻译
+```
 
-示例：
-- **Anthropic**：通过 OpenAI 兼容端点使用
-- **本地模型**：Ollama、LocalAI 等
-- **自定义**：任何支持 OpenAI 兼容 API 的服务
+**CLI：**
+```bash
+# 简单翻译
+translamate translate "Hello World" --to zh-CN
 
-</details>
+# 文件翻译
+translamate translate document.md --to ja --output document-ja.md
 
-### 单文本翻译
+# 批量翻译
+translamate batch ./docs --to zh-CN --output ./docs-zh
+```
 
-1. 点击侧边栏的 **翻译** 图标
-2. 在左侧面板输入或粘贴文本
-3. 选择源语言（或保留为"自动检测"）
-4. 选择目标语言
-5. 点击 **翻译** 或按 `Ctrl/Cmd + Enter`
+---
 
-**功能：**
-- 自动检测源语言
-- 一键交换语言
-- 复制翻译到剪贴板
-- 查看字符计数
-- 实时错误反馈
+## 📖 使用示例
 
-### 批量文件翻译
+### 🤖 桌面应用
 
-1. 点击侧边栏的 **批量** 图标
-2. 选择文件：
-   - **选择文件**：选择多个 Markdown 文件
-   - **选择文件夹**：扫描文件夹及所有子文件夹中的 Markdown 文件
+```
+1. 打开 TranslaMate（或按 Ctrl/Cmd+Shift+T）
+2. 在输入框中输入文本
 3. 选择目标语言
-4. 选择输出目录
-5. 点击 **开始翻译**
+4. 按 Ctrl/Cmd+Enter 翻译
+5. 在侧边栏查看历史记录
+```
 
-**功能：**
-- 支持 `.md` 和 `.markdown` 文件
-- 递归文件夹扫描（排除 `node_modules`、`.git`）
-- 实时进度跟踪
-- 保留文件夹结构
-- 错误处理和报告
-- 文件以语言后缀保存（例如：`README_zh-CN.md`）
+### 💻 命令行界面
 
-**进度跟踪：**
-- 总文件数
-- 完成/失败计数器
-- 当前正在翻译的文件
-- 可视化进度条
+```bash
+# 查看所有命令
+translamate --help
 
-### 翻译历史
+# 翻译文本
+translamate translate "Hello, how are you?" --to zh-CN
+# 输出：你好，你好吗？
 
-1. 点击侧边栏的 **历史** 图标
-2. 查看所有过去的翻译
-3. 复制任何翻译
-4. 删除单个条目或清除全部
+# 指定源语言翻译
+translamate translate "Bonjour" --from fr --to en
 
-**功能：**
-- 每个条目的时间戳
-- 源语言和目标语言
-- 搜索和过滤
-- 持久存储（最多 100 条）
-- 一键重新翻译
+# 翻译文件
+translamate translate readme.md --to ja --output readme-ja.md
 
-### 键盘快捷键
+# 批量翻译目录
+translamate batch ./content --to de --ext "md,txt,html"
 
-| 快捷键 | 操作 |
-|--------|------|
-| `Ctrl/Cmd + Shift + T` | 显示/隐藏 TranslaMate 窗口 |
-| `Ctrl/Cmd + Enter` | 执行翻译 |
-| `Esc` | 关闭窗口 |
+# 查看配置
+translamate config list
+```
 
 ---
 
-## 详细配置
+## 📋 支持的提供商
 
-### API 提供商
+### AI 翻译提供商
 
-#### DeepSeek（推荐）
-
-**为什么选择 DeepSeek？**
-- 价格非常实惠（约 ¥1 / 100万 tokens）
-- 响应速度快
-- 高质量翻译
-- 无注册费用
-
-**设置：**
-1. 访问 [https://platform.deepseek.com](https://platform.deepseek.com)
-2. 免费注册账号
-3. 进入 **API Keys** 部分
-4. 创建新的 API 密钥
-5. 复制并粘贴到 TranslaMate 设置中
-
-**配置：**
-```
-API Base URL: https://api.deepseek.com
-Model: deepseek-chat（或 deepseek-reasoner 用于复杂任务）
-Max Tokens: 512（根据文本长度调整）
-Temperature: 0.7（更低更直译，更高更自然）
-```
-
-#### OpenAI
-
-**设置：**
-1. 访问 [https://platform.openai.com](https://platform.openai.com)
-2. 注册或登录
-3. 进入 **API Keys** 部分
-4. 创建新的 API 密钥
-5. 复制并粘贴到 TranslaMate 设置中
-
-**配置：**
-```
-API Base URL: https://api.openai.com/v1
-Model: gpt-4（推荐）或 gpt-3.5-turbo（更快、更便宜）
-Max Tokens: 512
-Temperature: 0.7
-```
-
-#### 本地模型（Ollama 等）
-
-对于 Ollama 或其他本地 LLM 服务器：
-
-```
-API Base URL: http://localhost:11434/v1
-Model: qwen2、llama2 或任何已安装的模型
-```
-
-**注意：** 确保你的本地服务器正在运行并支持 OpenAI 兼容的端点。
-
-### 高级设置
-
-**最大令牌数（Max Tokens）：**
-- 控制最大响应长度
-- 默认：512 tokens（约 400-500 个英文单词）
-- 增加以处理更长的文档
-- 减少以加快响应速度
-
-**温度（Temperature）：**
-- 控制翻译中的随机性
-- 范围：0.0 - 2.0
-- **0.0 - 0.3**：更直译、一致的翻译
-- **0.4 - 0.7**：平衡（推荐）
-- **0.8 - 1.0**：更有创意、自然的变化
+| 提供商 | Base URL | 模型 | 价格 |
+|--------|----------|------|------|
+| **DeepSeek**（推荐） | `https://api.deepseek.com` | `deepseek-chat`, `deepseek-reasoner` | ~¥1/百万 tokens |
+| **OpenAI** | `https://api.openai.com/v1` | `gpt-4`, `gpt-3.5-turbo` | $0.50-30/百万 tokens |
+| **SiliconFlow** | `https://api.siliconflow.cn` | 多种开源模型 | 有竞争力 |
+| **本地 (Ollama)** | `http://localhost:11434/v1` | 任意本地模型 | 免费 |
 
 ---
 
-## 支持的语言
+## 🌐 支持的语言
 
-TranslaMate 支持以下语言之间的翻译：
-
-| 语言 | 代码 | 本地名称 |
-|------|------|----------|
-| 自动检测 | `auto` | - |
-| 简体中文 | `zh-CN` | 简体中文 |
-| 繁體中文 | `zh-TW` | 繁體中文 |
-| English | `en` | English |
-| 日本語 | `ja` | 日本語 |
-| Español | `es` | Español |
-| Français | `fr` | Français |
-| 한국어 | `ko` | 한국어 |
-| العربية | `ar` | العربية |
-| Tiếng Việt | `vi` | Tiếng Việt |
-| Deutsch | `de` | Deutsch |
+| 语言 | 代码 | 语言 | 代码 |
+|------|------|------|------|
+| 自动检测 | `auto` | 韩语 | `ko` |
+| 简体中文 | `zh-CN` | 阿拉伯语 | `ar` |
+| 繁体中文 | `zh-TW` | 越南语 | `vi` |
+| 英语 | `en` | 德语 | `de` |
+| 日语 | `ja` | 西班牙语 | `es` |
+| 法语 | `fr` | 葡萄牙语 | `pt` |
+| 俄语 | `ru` | 意大利语 | `it` |
 
 ---
 
-## 开发
+## ⚙️ 配置
+
+### 方式 1：环境变量（推荐）
+
+在项目根目录创建 `.env` 文件：
+
+```bash
+TRANSLAMATE_API_KEY=your_key_here
+TRANSLAMATE_BASE_URL=https://api.deepseek.com
+TRANSLAMATE_MODEL=deepseek-chat
+TRANSLAMATE_MAX_TOKENS=512
+TRANSLAMATE_TEMPERATURE=0.7
+```
+
+### 方式 2：配置文件
+
+在 home 目录或项目目录创建 `.translamate.json`：
+
+```json
+{
+  "apiKey": "your_key_here",
+  "baseURL": "https://api.deepseek.com",
+  "model": "deepseek-chat",
+  "maxTokens": 512,
+  "temperature": 0.7
+}
+```
+
+### 方式 3：CLI 配置命令
+
+```bash
+# 设置配置
+translamate config set apiKey your_key_here
+translamate config set baseURL https://api.deepseek.com
+translamate config set model deepseek-chat
+
+# 查看配置
+translamate config list
+```
+
+### 配置优先级
+
+1. CLI 参数（最高）
+2. 环境变量
+3. 当前目录的 `.translamate.json`
+4. home 目录的 `.translamate.json`
+5. 默认值（最低）
+
+---
+
+## 🛠️ 开发
 
 ### 环境要求
 
@@ -324,200 +232,120 @@ TranslaMate 支持以下语言之间的翻译：
 ### 设置
 
 ```bash
-# 克隆仓库
-git clone https://github.com/username/translamate.git
+# 克隆
+git clone https://github.com/sanbuphy/translamate.git
 cd translamate
 
-# 安装依赖
+# 安装
 npm install
 
-# 启动开发服务器（支持热重载）
-npm run dev
-```
+# 桌面端开发模式
+npm run electron:dev
 
-### 构建
+# 构建 CLI
+npm run build:cli
 
-```bash
-# 类型检查
-npm run typecheck
-
-# 代码检查
-npm run lint
-
-# 格式化代码
-npm run format
-
-# 构建当前平台
-npm run build
-
-# 构建 Windows
-npm run build:win
-
-# 构建 macOS
-npm run build:mac
-
-# 构建所有平台
+# 构建桌面端
 npm run build:all
-```
-
-### 项目结构
-
-```
-TranslaMate/
-├── src/
-│   ├── main/              # Electron 主进程
-│   │   ├── index.ts       # 主入口点
-│   │   ├── preload.ts     # 预加载脚本
-│   │   ├── store.ts       # Electron 存储
-│   │   └── services/      # 后端服务
-│   │       ├── translation.ts  # 翻译服务
-│   │       └── batch.ts        # 批量翻译
-│   ├── renderer/          # React 前端
-│   │   ├── components/    # UI 组件
-│   │   ├── store/         # Zustand 状态
-│   │   └── App.tsx        # 主应用
-│   └── shared/            # 共享类型
-├── docs/                  # 文档
-└── tests/                 # 测试
 ```
 
 ### 技术栈
 
-- **框架**：Electron
-- **前端**：React 18 + TypeScript
-- **状态管理**：Zustand
-- **样式**：Tailwind CSS
-- **构建**：Vite
-- **API**：OpenAI SDK
+```
+┌─────────────────────────────────────────┐
+│  表现层                                  │
+│  ├── Electron + React (桌面端)           │
+│  └── Commander.js (CLI)                 │
+├─────────────────────────────────────────┤
+│  核心层                                  │
+│  ├── 翻译引擎                             │
+│  ├── 批量处理器                           │
+│  └── 配置加载器                           │
+├─────────────────────────────────────────┤
+│  基础设施                                │
+│  ├── OpenAI SDK                         │
+│  ├── Tailwind CSS                       │
+│  └── Zustand (状态管理)                  │
+└─────────────────────────────────────────┘
+```
 
 ---
 
-## 贡献
+## 📚 文档
 
-我们欢迎贡献！请参阅 [CONTRIBUTING.md](CONTRIBUTING.md) 了解指南。
-
-### 贡献方式
-
-- 🐛 报告错误
-- 💡 建议新功能
-- 📝 改进文档
-- 🔧 提交拉取请求
-- 🌍 添加翻译
-
-### 开发流程
-
-1. Fork 仓库
-2. 创建功能分支
-3. 进行更改
-4. 运行测试和代码检查
-5. 提交拉取请求
+- [快速开始指南](docs/QUICKSTART.md) - 5 分钟上手
+- [CLI 文档](docs/CLI.md) - 完整 CLI 参考
+- [API 参考](docs/API.md) - API 配置指南
+- [开发指南](docs/DEVELOPMENT.md) - 贡献和开发
+- [部署指南](docs/DEPLOYMENT.md) - 服务器部署
+- [架构文档](docs/ARCHITECTURE.md) - 系统架构
+- [贡献指南](docs/CONTRIBUTING.md) - 贡献规范
 
 ---
 
-## 常见问题
+## 🗺️ 路线图
 
-<details>
-<summary><b>我的数据是私密的吗？</b></summary>
-
-是的！所有翻译和历史记录都存储在本地。唯一发送到外部的数据是你正在翻译的文本，它直接发送到你配置的 API 端点。我们不收集任何遥测或使用数据。
-</details>
-
-<details>
-<summary><b>你推荐哪个 API 提供商？</b></summary>
-
-我们为大多数用户推荐 **DeepSeek**：
-- 非常实惠（约 ¥1 / 100万 tokens）
-- 响应速度快
-- 高质量翻译
-- 慷慨的免费额度
-
-OpenAI 也很优秀，但价格更贵。
-</details>
-
-<details>
-<summary><b>我可以使用本地模型吗？</b></summary>
-
-可以！任何 OpenAI 兼容的 API 都可以使用，包括：
-- Ollama (http://localhost:11434/v1)
-- LocalAI
-- vLLM
-- 任何自托管的 LLM 服务器
-</details>
-
-<details>
-<summary><b>费用是多少？</b></summary>
-
-使用 DeepSeek 定价（约 ¥1 / 100万 tokens）：
-- ~1,000 字 ≈ 1,300 tokens
-- 翻译 1,000 字成本不到 ¥0.002
-- ¥1 可以翻译约 75 万字
-
-OpenAI 更贵，但对于个人使用仍然非常实惠。
-</details>
-
-<details>
-<summary><b>为什么批量翻译只支持 Markdown 文件？</b></summary>
-
-Markdown 是最初支持的格式。我们计划在未来的版本中添加对更多文件类型（TXT、PDF、DOCX 等）的支持。欢迎请求其他格式！
-</details>
-
-<details>
-<summary><b>我可以翻译很长的文档吗？</b></summary>
-
-当前的最大令牌限制是 4096（约 3,000-4,000 字）。对于更长的文档，我们建议将它们分成较小的部分。我们正在为未来的版本开发分块支持。
-</details>
+- [ ] PDF 和 DOCX 批量翻译支持
+- [ ] 翻译记忆库和术语表
+- [ ] 自定义提供商插件系统
+- [ ] Linux 支持 (AppImage)
+- [ ] 历史记录云同步
+- [ ] REST API 服务器模式
+- [ ] Web 界面
 
 ---
 
-## 更新日志
+## 🤝 贡献
 
-查看 [CHANGELOG.md](CHANGELOG.md) 了解版本历史和更新。
+欢迎贡献！参与步骤：
 
-### 版本 0.1.0（当前）
+1. **Fork** 仓库
+2. 创建**功能分支** (`git checkout -b feature/amazing-feature`)
+3. **提交**更改 (`git commit -m 'feat: add amazing feature'`)
+4. **推送**到分支 (`git push origin feature/amazing-feature`)
+5. 发起 **Pull Request**
 
-**功能：**
-- ✨ 初始发布
-- 🤖 AI 驱动的单文本翻译
-- 📝 批量 Markdown 文件翻译
-- 🌍 支持 10 种语言
-- 📚 翻译历史
-- 🎨 深色模式支持
-- ⌨️ 键盘快捷键
-- 📦 跨平台支持（Windows、macOS）
+详见 [CONTRIBUTING.md](docs/CONTRIBUTING.md)。
 
----
+### 贡献者
 
-## 许可证
-
-[MIT License](LICENSE) © 2026 TranslaMate Contributors
+<a href="https://github.com/sanbuphy/translamate/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sanbuphy/translamate" />
+</a>
 
 ---
 
-## 致谢
+## 📊 项目统计
 
-使用优秀的开源工具构建：
+<div align="center">
 
-- [Electron](https://www.electronjs.org/) - 跨平台桌面框架
-- [React](https://react.dev/) - UI 库
-- [Tailwind CSS](https://tailwindcss.com/) - CSS 框架
-- [Vite](https://vitejs.dev/) - 构建工具
-- [Zustand](https://zustand-demo.pmnd.rs/) - 状态管理
-- [Lucide Icons](https://lucide.dev/) - 精美图标
+[![Star History Chart](https://api.star-history.com/svg?repos=sanbuphy/translamate&type=Date)](https://star-history.com/#sanbuphy/translamate&Date)
+
+</div>
 
 ---
 
-## 支持
+## 📄 许可证
 
-- 📖 [文档](docs/)
-- 🐛 [报告问题](https://github.com/username/translamate/issues)
-- 💬 [讨论](https://github.com/username/translamate/discussions)
-- 📧 邮箱：support@translamate.app
+本项目采用 **MIT 许可证** - 详见 [LICENSE](LICENSE) 文件。
 
 ---
 
-<p align="center">
-  <b>由 TranslaMate 团队用 ❤️ 制作</b>
-  <br>
-  <a href="https://github.com/username/translamate">GitHub</a> •
-  <a href="https://translamate.app">官网</a>
-</p>
+## 🙏 致谢
+
+感谢所有 AI 提供商提供的优秀 API：
+
+[DeepSeek](https://www.deepseek.com/) • [OpenAI](https://openai.com/) • [SiliconFlow](https://cloud.siliconflow.cn/) • [Ollama](https://ollama.com/)
+
+特别感谢开源社区提供的工具：
+[Electron](https://www.electronjs.org/) • [React](https://react.dev/) • [Vite](https://vitejs.dev/) • [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+<div align="center">
+
+**⭐ 在 GitHub 上给我们点星 — 这对我们是很大的鼓励！**
+
+[报告 Bug](https://github.com/sanbuphy/translamate/issues) • [功能建议](https://github.com/sanbuphy/translamate/issues) • [文档](https://github.com/sanbuphy/translamate/tree/main/docs)
+
+</div>
