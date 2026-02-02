@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { loadConfig, saveConfig, ConfigLoader, type TranslationConfig } from '../../core';
+import { loadConfig, saveConfig, ConfigLoader } from '../../core';
 
 interface ConfigOptions {
   set?: string;

@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-import { SUPPORTED_LANGUAGES } from '@shared/types';
+import { SUPPORTED_LANGUAGES, Language } from '@shared/types';
 import {
   File,
   Folder,
@@ -8,7 +8,6 @@ import {
   Play,
   X,
   Check,
-  AlertCircle,
   FileText,
   Trash2,
 } from 'lucide-react';
@@ -41,7 +40,7 @@ export default function BatchView() {
   const handleSelectFiles = async () => {
     const files = await window.electronAPI.selectMarkdownFiles();
     if (files.length > 0) {
-      const fileObjects = files.map((path) => ({
+      const fileObjects = files.map((path: string) => ({
         path,
         name: path.split(/[/\\]/).pop() || path,
       }));
@@ -52,7 +51,7 @@ export default function BatchView() {
   const handleSelectFolder = async () => {
     const files = await window.electronAPI.selectMarkdownFolder();
     if (files.length > 0) {
-      const fileObjects = files.map((path) => ({
+      const fileObjects = files.map((path: string) => ({
         path,
         name: path.split(/[/\\]/).pop() || path,
       }));
@@ -137,7 +136,7 @@ export default function BatchView() {
             disabled={isTranslating}
             className="input-field"
           >
-            {SUPPORTED_LANGUAGES.filter((lang) => lang.code !== 'auto').map((lang) => (
+            {SUPPORTED_LANGUAGES.filter((lang: Language) => lang.code !== 'auto').map((lang: Language) => (
               <option key={lang.code} value={lang.code}>
                 {lang.name} ({lang.nativeName})
               </option>

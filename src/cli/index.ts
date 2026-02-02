@@ -20,6 +20,10 @@ program
   .option('-f, --from <lang>', 'Source language', 'auto')
   .option('-o, --output <path>', 'Output file path (for file translation)')
   .option('-c, --config <path>', 'Config file path')
+  .option('--chunked', 'Force use chunked translation mode')
+  .option('--glossary <path>', 'Path to glossary JSON file')
+  .option('--max-tokens-per-chunk <number>', 'Max tokens per chunk (default: 1000)', '1000')
+  .option('--parallel-chunks <number>', 'Number of parallel chunks (default: 3)', '3')
   .action(translateCommand);
 
 program
@@ -31,6 +35,10 @@ program
   .option('-o, --output <dir>', 'Output directory', './translated')
   .option('-e, --exclude <dirs>', 'Exclude directories (comma-separated)', 'node_modules,.git')
   .option('-c, --config <path>', 'Config file path')
+  .option('--glossary <path>', 'Path to glossary JSON file')
+  .option('--parallel-files <number>', 'Number of parallel files (default: 2)', '2')
+  .option('--parallel-chunks <number>', 'Number of parallel chunks per file (default: 3)', '3')
+  .option('--max-tokens-per-chunk <number>', 'Max tokens per chunk (default: 1000)', '1000')
   .action(batchCommand);
 
 program

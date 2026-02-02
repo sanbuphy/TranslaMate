@@ -6,7 +6,7 @@ import type {
   FileTranslationTask,
   BatchTranslationProgress,
   BatchTranslationOptions,
-} from '../types';
+} from '../../shared/types';
 
 export class BatchProcessor {
   private engine: TranslationEngine;

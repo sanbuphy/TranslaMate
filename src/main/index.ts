@@ -1,7 +1,10 @@
 import { app, BrowserWindow, ipcMain, globalShortcut, Menu, dialog } from 'electron';
 import * as path from 'path';
 import { store } from './store';
-import { TranslationEngine, BatchProcessor, type TranslationConfig, type TranslationRequest, type TranslationHistory, type BatchTranslationProgress } from '../core';
+import { TranslationEngine, BatchProcessor, type TranslationConfig, type TranslationRequest, type TranslationHistory } from '../core';
+import type { BatchTranslationProgress, ChunkedTranslationRequest, TranslationProgress } from '../shared/types';
+import { ChunkedTranslationEngine } from '../core/translation/chunked-engine';
+import { loadGlossary } from '../core/config/loader';
 
 let mainWindow: BrowserWindow | null = null;
 const isDev = process.env.NODE_ENV === 'development';
@@ -145,7 +148,7 @@ ipcMain.handle('get-config', (): TranslationConfig => {
     baseURL: 'https://api.deepseek.com',
     model: 'deepseek-chat',
     maxTokens: 512,
-    temperature: 0.7,
+    temperature: 0.3,
   };
 });
 
@@ -240,4 +243,35 @@ ipcMain.handle('batch-translate', async (
       event.sender.send('batch-progress', progress);
     },
   });
+});
+
+// 分块翻译 IPC handler
+ipcMain.handle('translate-chunked', async (
+  event,
+  request: ChunkedTranslationRequest
+): Promise<{ text: string; sourceLang?: string }> => {
+  const config = store.get('config') as TranslationConfig;
+
+  if (!config || !config.apiKey) {
+    throw new Error('API configuration not found. Please configure your API key in settings.');
+  }
+
+  const engine = new ChunkedTranslationEngine(config);
+  
+  const result = await engine.translateChunked(
+    request,
+    (progress: TranslationProgress) => {
+      event.sender.send('translation-progress', progress);
+    }
+  );
+
+  return {
+    text: result.text,
+    sourceLang: result.sourceLang,
+  };
+});
+
+// 加载术语表 IPC handler
+ipcMain.handle('load-glossary', async (_event, glossaryPath: string): Promise<Record<string, string>> => {
+  return loadGlossary(glossaryPath);
 });

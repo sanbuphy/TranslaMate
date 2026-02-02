@@ -7,7 +7,7 @@ const store = new Store({
       baseURL: 'https://api.deepseek.com',
       model: 'deepseek-chat',
       maxTokens: 512,
-      temperature: 0.7,
+      temperature: 0.3,
     },
     history: [],
   },

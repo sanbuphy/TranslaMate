@@ -11,10 +11,10 @@ export default defineConfig({
     electron([
       {
         // Main process entry
-        entry: 'src/main/index.ts',
+        entry: path.resolve(__dirname, 'src/main/index.ts'),
         vite: {
           build: {
-            outDir: 'dist/main',
+            outDir: path.resolve(__dirname, 'dist/main'),
             rollupOptions: {
               external: ['electron']
             }
@@ -34,7 +34,7 @@ export default defineConfig({
   },
   root: 'src/renderer',
   build: {
-    outDir: '../../dist/renderer',
+    outDir: path.resolve(__dirname, 'dist/renderer'),
     emptyOutDir: true
   },
   server: {

@@ -41,7 +41,7 @@ ${request.text}`;
           { role: 'user', content: userPrompt },
         ],
         max_tokens: maxTokens || 512,
-        temperature: temperature || 0.7,
+        temperature: temperature || 0.3,
         stream: false,
       });
 

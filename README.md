@@ -162,13 +162,13 @@ translamate config list
 
 | Language | Code | Language | Code |
 |----------|------|----------|------|
-| Auto Detect | `auto` | Korean | `ko` |
-| Simplified Chinese | `zh-CN` | Arabic | `ar` |
-| Traditional Chinese | `zh-TW` | Vietnamese | `vi` |
-| English | `en` | German | `de` |
-| Japanese | `ja` | Spanish | `es` |
-| French | `fr` | Portuguese | `pt` |
-| Russian | `ru` | Italian | `it` |
+| Auto Detect | `auto` | 한국어 (Korean) | `ko` |
+| 简体中文 (Simplified Chinese) | `zh-CN` | العربية (Arabic) | `ar` |
+| 繁體中文 (Traditional Chinese) | `zh-TW` | Tiếng Việt (Vietnamese) | `vi` |
+| English | `en` | Deutsch (German) | `de` |
+| 日本語 (Japanese) | `ja` | Español (Spanish) | `es` |
+| Français (French) | `fr` | Português (Portuguese) | `pt` |
+| Русский (Russian) | `ru` | Italiano (Italian) | `it` |
 
 ---
 

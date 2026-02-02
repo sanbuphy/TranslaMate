@@ -1,11 +1,11 @@
 import { useStore } from '../store/useStore';
 import { Trash2, Copy, Clock } from 'lucide-react';
-import { SUPPORTED_LANGUAGES } from '@shared/types';
+import { SUPPORTED_LANGUAGES, Language } from '@shared/types';
 import { useState } from 'react';
 
 export default function HistoryView() {
   const { history, clearHistory, deleteHistoryItem } = useStore();
-  const [copied, setCopied] = useState(false);
+  const [, setCopied] = useState(false);
 
   const handleCopy = async (text: string) => {
     await navigator.clipboard.writeText(text);
@@ -14,7 +14,7 @@ export default function HistoryView() {
   };
 
   const getLanguageName = (code: string) => {
-    return SUPPORTED_LANGUAGES.find((lang) => lang.code === code)?.name || code;
+    return SUPPORTED_LANGUAGES.find((lang: Language) => lang.code === code)?.name || code;
   };
 
   const formatDate = (timestamp: number) => {
