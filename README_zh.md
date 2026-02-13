@@ -273,13 +273,16 @@ npm run build:all
 
 ## 文档
 
-- [快速开始指南](docs/QUICKSTART.md) - 5 分钟上手
-- [CLI 文档](docs/CLI.md) - 完整 CLI 参考
-- [API 参考](docs/API.md) - API 配置指南
-- [开发指南](docs/DEVELOPMENT.md) - 贡献和开发
-- [部署指南](docs/DEPLOYMENT.md) - 服务器部署
-- [架构文档](docs/ARCHITECTURE.md) - 系统架构
-- [贡献指南](docs/CONTRIBUTING.md) - 贡献规范
+- [快速开始指南](docs/zh/quickstart.md) - 5 分钟上手
+- [CLI 文档](docs/zh/cli.md) - 完整 CLI 参考
+- [API 参考](docs/zh/api.md) - API 配置指南
+- [开发指南](docs/zh/development.md) - 贡献和开发
+- [部署指南](docs/zh/deployment.md) - 服务器部署
+- [架构文档](docs/zh/architecture.md) - 系统架构（含分块翻译技术）
+- [翻译代理](docs/zh/translation-agent.md) - 多提供商配置
+- [贡献指南](docs/zh/contributing.md) - 贡献规范
+- [术语表](docs/zh/glossary.md) - 术语解释
+- [构建验证](docs/zh/build-verification.md) - 构建检查清单
 
 ---
 

@@ -1,5 +1,78 @@
 import OpenAI from 'openai';
-import type { TranslationConfig, TranslationResult, TranslationProgress } from '../../shared/types';
+import type { TranslationConfig, TranslationResult, TranslationProgress, TokenUsage } from '../../shared/types';
+
+// 单个块翻译结果
+interface SingleChunkResult {
+  text: string;
+  usage?: TokenUsage;
+}
+
+export function splitTextIntoChunks(text: string, maxTokens: number, overlap: number): string[] {
+  const chunks: string[] = [];
+  const sentences = splitIntoSentences(text);
+
+  let currentChunk = '';
+  let currentTokens = 0;
+
+  for (const sentence of sentences) {
+    const sentenceTokens = estimateTokens(sentence);
+
+    if (currentTokens + sentenceTokens > maxTokens && currentChunk.length > 0) {
+      chunks.push(currentChunk.trim());
+      const overlapText = getOverlapText(currentChunk, overlap);
+      currentChunk = overlapText + sentence;
+      currentTokens = estimateTokens(currentChunk);
+    } else {
+      currentChunk += sentence + ' ';
+      currentTokens += sentenceTokens;
+    }
+  }
+
+  if (currentChunk.trim().length > 0) {
+    chunks.push(currentChunk.trim());
+  }
+
+  return chunks.length > 0 ? chunks : [text];
+}
+
+export function splitIntoSentences(text: string): string[] {
+  const sentenceRegex = /[^.!?。！？]+[.!?。！？]+/g;
+  const matches = text.match(sentenceRegex);
+
+  if (!matches || matches.length === 0) {
+    return text.split(/\n\n+/).filter(p => p.trim().length > 0);
+  }
+
+  return matches.map(s => s.trim());
+}
+
+export function getOverlapText(text: string, overlapTokens: number): string {
+  const sentences = splitIntoSentences(text);
+  let overlapText = '';
+  let tokens = 0;
+
+  for (let i = sentences.length - 1; i >= 0; i--) {
+    const sentence = sentences[i];
+    const sentenceTokens = estimateTokens(sentence);
+
+    if (tokens + sentenceTokens > overlapTokens) {
+      break;
+    }
+
+    overlapText = sentence + ' ' + overlapText;
+    tokens += sentenceTokens;
+  }
+
+  return overlapText;
+}
+
+export function estimateTokens(text: string): number {
+  const cjkChars = (text.match(/[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g) || []).length;
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+  const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
+  const otherChars = text.length - cjkChars - englishChars;
+  return Math.ceil(cjkChars + englishWords + otherChars * 0.25);
+}
 
 export interface ChunkedTranslationRequest {
   text: string;
@@ -27,6 +100,11 @@ export interface ParallelDocumentRequest {
 export interface ChunkedTranslationResult extends TranslationResult {
   chunks: number;
   totalTokens: number;
+  totalUsage?: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+  };
 }
 
 export interface ParallelDocumentResult {
@@ -61,8 +139,8 @@ export class ChunkedTranslationEngine {
       message: '正在分析文本并分块...',
     });
 
-    const chunks = this.splitTextIntoChunks(request.text, maxTokensPerChunk, chunkOverlap);
-    const totalTokens = this.estimateTokens(request.text);
+    const chunks = splitTextIntoChunks(request.text, maxTokensPerChunk, chunkOverlap);
+    const totalTokens = estimateTokens(request.text);
 
     if (chunks.length === 1) {
       // 单块直接翻译
@@ -75,9 +153,10 @@ export class ChunkedTranslationEngine {
       );
 
       return {
-        text: result,
+        text: result.text,
         chunks: 1,
         totalTokens,
+        totalUsage: result.usage,
       };
     }
 
@@ -90,6 +169,7 @@ export class ChunkedTranslationEngine {
     });
 
     const translatedChunks: string[] = [];
+    const chunkUsages: (TokenUsage | undefined)[] = [];
 
     // 分批并行处理
     for (let i = 0; i < chunks.length; i += parallelChunks) {
@@ -99,7 +179,7 @@ export class ChunkedTranslationEngine {
         const prevChunk = chunkIndex > 0 ? chunks[chunkIndex - 1] : null;
         const nextChunk = chunkIndex < chunks.length - 1 ? chunks[chunkIndex + 1] : null;
 
-        const translated = await this.translateSingleChunk(
+        const result = await this.translateSingleChunk(
           chunk,
           request.targetLanguage,
           request.glossary,
@@ -107,14 +187,15 @@ export class ChunkedTranslationEngine {
           nextChunk
         );
 
-        return { index: chunkIndex, translated };
+        return { index: chunkIndex, result };
       });
 
       const batchResults = await Promise.all(batchPromises);
 
       // 按顺序存储结果
-      batchResults.forEach(({ index, translated }) => {
-        translatedChunks[index] = translated;
+      batchResults.forEach(({ index, result }) => {
+        translatedChunks[index] = result.text;
+        chunkUsages[index] = result.usage;
       });
 
       // 报告进度
@@ -144,10 +225,25 @@ export class ChunkedTranslationEngine {
       message: '翻译完成！',
     });
 
+    // 汇总 token 使用信息
+    const totalUsage = chunkUsages.reduce(
+      (acc: TokenUsage | undefined, usage: TokenUsage | undefined) => {
+        if (!usage) return acc;
+
+        const promptTokens = (acc?.promptTokens || 0) + (usage.promptTokens || 0);
+        const completionTokens = (acc?.completionTokens || 0) + (usage.completionTokens || 0);
+        const totalTokens = (acc?.totalTokens || 0) + (usage.totalTokens || 0);
+
+        return { promptTokens, completionTokens, totalTokens };
+      },
+      { promptTokens: 0, completionTokens: 0, totalTokens: 0 }
+    );
+
     return {
       text: combinedText,
       chunks: chunks.length,
       totalTokens,
+      totalUsage,
     };
   }
 
@@ -219,86 +315,6 @@ export class ChunkedTranslationEngine {
     return results;
   }
 
-  // 智能文本分块
-  private splitTextIntoChunks(text: string, maxTokens: number, overlap: number): string[] {
-    const chunks: string[] = [];
-    const sentences = this.splitIntoSentences(text);
-
-    let currentChunk = '';
-    let currentTokens = 0;
-
-    for (const sentence of sentences) {
-      const sentenceTokens = this.estimateTokens(sentence);
-
-      if (currentTokens + sentenceTokens > maxTokens && currentChunk.length > 0) {
-        // 保存当前块
-        chunks.push(currentChunk.trim());
-
-        // 开始新块，包含重叠部分
-        const overlapText = this.getOverlapText(currentChunk, overlap);
-        currentChunk = overlapText + sentence;
-        currentTokens = this.estimateTokens(currentChunk);
-      } else {
-        currentChunk += sentence + ' ';
-        currentTokens += sentenceTokens;
-      }
-    }
-
-    // 添加最后一个块
-    if (currentChunk.trim().length > 0) {
-      chunks.push(currentChunk.trim());
-    }
-
-    return chunks.length > 0 ? chunks : [text];
-  }
-
-  // 将文本分割成句子
-  private splitIntoSentences(text: string): string[] {
-    // 支持中英文句子分割
-    const sentenceRegex = /[^.!?。！？]+[.!?。！？]+/g;
-    const matches = text.match(sentenceRegex);
-
-    if (!matches || matches.length === 0) {
-      // 如果没有找到句子，按段落分割
-      return text.split(/\n\n+/).filter(p => p.trim().length > 0);
-    }
-
-    return matches.map(s => s.trim());
-  }
-
-  // 获取重叠文本
-  private getOverlapText(text: string, overlapTokens: number): string {
-    const sentences = this.splitIntoSentences(text);
-    let overlapText = '';
-    let tokens = 0;
-
-    // 从后往前取句子，直到达到重叠token数
-    for (let i = sentences.length - 1; i >= 0; i--) {
-      const sentence = sentences[i];
-      const sentenceTokens = this.estimateTokens(sentence);
-
-      if (tokens + sentenceTokens > overlapTokens) {
-        break;
-      }
-
-      overlapText = sentence + ' ' + overlapText;
-      tokens += sentenceTokens;
-    }
-
-    return overlapText;
-  }
-
-  // 估算token数
-  private estimateTokens(text: string): number {
-    // 简单估算：中文字符 + 英文单词
-    const cjkChars = (text.match(/[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g) || []).length;
-    const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
-    const otherChars = text.length - cjkChars - englishWords;
-
-    // 中文字符算1个token，英文单词算0.75个token，其他字符算0.25个token
-    return Math.ceil(cjkChars + englishWords * 0.75 + otherChars * 0.25);
-  }
-
   // 翻译单个块，带有上下文
   private async translateSingleChunk(
     chunk: string,
@@ -306,7 +322,7 @@ export class ChunkedTranslationEngine {
     glossary?: Record<string, string>,
     prevChunk?: string | null,
     nextChunk?: string | null
-  ): Promise<string> {
+  ): Promise<SingleChunkResult> {
     const client = new OpenAI({
       apiKey: this.config.apiKey,
       baseURL: this.config.baseURL,
@@ -353,7 +369,16 @@ ${chunk}${glossaryPrompt}
       max_tokens: this.config.maxTokens,
     });
 
-    return response.choices[0]?.message?.content?.trim() || chunk;
+    const translatedText = response.choices[0]?.message?.content?.trim() || chunk;
+
+    // 提取 token 使用信息
+    const usage: TokenUsage | undefined = response.usage ? {
+      promptTokens: response.usage.prompt_tokens,
+      completionTokens: response.usage.completion_tokens,
+      totalTokens: response.usage.total_tokens,
+    } : undefined;
+
+    return { text: translatedText, usage };
   }
 
   // 智能合并翻译结果

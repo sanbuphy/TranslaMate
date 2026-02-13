@@ -528,10 +528,10 @@ translamate translate "Draft text" \
 
 ## 十二、相关文档
 
-- [CLI 使用文档](./CLI.md)
-- [API 配置文档](./API.md)
-- [架构文档](./ARCHITECTURE.md)
-- [快速开始](./QUICKSTART.md)
+- [CLI 使用文档](./cli.md)
+- [API 配置文档](./api.md)
+- [架构文档](./architecture.md)
+- [快速开始](./quickstart.md)
 
 ---
 

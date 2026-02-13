@@ -30,7 +30,7 @@ TranslaMate/
 └── build/                 # Build resources
 ```
 
-For detailed architecture information, see [ARCHITECTURE.md](ARCHITECTURE.md).
+For detailed architecture information, see [architecture.md](architecture.md).
 
 ## Technology Stack
 
@@ -143,10 +143,90 @@ Styles use Tailwind CSS utility classes. Global styles are in `src/renderer/inde
 
 ## Testing
 
+### Test Scripts
 ```bash
-# Run tests (when implemented)
+# Run all tests
 npm test
+
+# Run unit tests only
+npm run test:unit
+
+# Run performance tests (requires API key)
+npm run test:performance
 ```
+
+### Unit Tests
+The unit test suite (`test/unit.chunking-algorithm.test.ts`) validates:
+- Chunking algorithm for text segmentation
+- Token estimation accuracy for CJK and English text
+- Sentence splitting for Chinese and English
+- Content preservation through chunking
+
+**Run unit tests:**
+```bash
+npm run test:unit
+```
+
+**Expected Results:**
+```
+════════════════════════════════════════════════════════════
+  Chunking Algorithm Tests
+═════════════════════════════════════════════════════════════
+
+  Empty text should return original ... ✓ (0ms)
+  Short text should not chunk ... ✓ (0ms)
+  Long text should be chunked ... ✓ (1ms)
+  Each chunk should be within token limit ... ✓ (1ms)
+  All content should be preserved ... ✓ (0ms)
+  CJK characters should count as 1 token ... ✓ (0ms)
+  English should count by characters ... ✓ (0ms)
+  Should split Chinese sentences correctly ... ✓ (0ms)
+  Should split English sentences correctly ... ✓ (0ms)
+
+────────────────────────────────────────────────────────────
+  Results: 9 passed, 0 failed
+────────────────────────────────────────────────────────────
+```
+
+### Performance Tests
+Performance tests (`test/performance.chunked-engine.test.ts`) measure:
+- Serial translation performance (parallelChunks=1)
+- Parallel translation performance (parallelChunks=2,3,5)
+- Speedup ratios and time savings
+- Translation quality validation
+
+**Run performance tests:**
+```bash
+npm run test:performance
+```
+
+**Note:** Requires a valid API key configuration.
+
+### Translation Verification Tests
+Translation tests verify the CLI can translate documents to multiple languages:
+- English (`en`)
+- Traditional Chinese (`zh-TW`)
+- Japanese (`ja`)
+
+**Run translation tests:**
+```bash
+# Test individual languages
+npm run test:translate:en
+npm run test:translate:zh-tw
+npm run test:translate:ja
+
+# Test all languages
+npm run test:translate:all
+```
+
+**Note:** These tests require a configured API key.
+
+### Test Files
+- `test/unit.chunking-algorithm.test.ts` - Unit tests for chunking algorithm
+- `test/performance.chunked-engine.test.ts` - Performance benchmarks
+- `test/integration.deepseek-api.test.ts` - Integration tests with real API
+- `test/data.ai-article.md` - Test document for translation
+
 
 ## Building
 
@@ -326,8 +406,8 @@ npm run typecheck
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+Please see [contributing.md](contributing.md) for contribution guidelines.
 
 ## License
 
-MIT License - see [LICENSE](../LICENSE) for details.
+Apache License 2.0 - see [LICENSE](../../LICENSE) for details.

@@ -69,8 +69,8 @@ export class ConfigLoader {
   static createDefault(): TranslationConfig {
     return {
       apiKey: '',
-      baseURL: 'https://api.deepseek.com',
-      model: 'deepseek-chat',
+      baseURL: 'https://api.siliconflow.cn/v1',
+      model: 'deepseek-ai/DeepSeek-V3',
       maxTokens: 512,
       temperature: 0.3,
       chunkedTranslation: {
@@ -90,8 +90,8 @@ export class ConfigLoader {
   private static mergeWithDefaults(config: ConfigFile): TranslationConfig {
     return {
       apiKey: config.apiKey || process.env.TRANSLAMATE_API_KEY || '',
-      baseURL: config.baseURL || process.env.TRANSLAMATE_BASE_URL || 'https://api.deepseek.com',
-      model: config.model || process.env.TRANSLAMATE_MODEL || 'deepseek-chat',
+      baseURL: config.baseURL || process.env.TRANSLAMATE_BASE_URL || 'https://api.siliconflow.cn/v1',
+      model: config.model || process.env.TRANSLAMATE_MODEL || 'deepseek-ai/DeepSeek-V3',
       maxTokens: config.maxTokens || parseInt(process.env.TRANSLAMATE_MAX_TOKENS || '512', 10),
       temperature: config.temperature || parseFloat(process.env.TRANSLAMATE_TEMPERATURE || '0.3'),
       chunkedTranslation: {
@@ -113,8 +113,8 @@ export class ConfigLoader {
   private static loadFromEnv(): TranslationConfig {
     return {
       apiKey: process.env.TRANSLAMATE_API_KEY || '',
-      baseURL: process.env.TRANSLAMATE_BASE_URL || 'https://api.deepseek.com',
-      model: process.env.TRANSLAMATE_MODEL || 'deepseek-chat',
+      baseURL: process.env.TRANSLAMATE_BASE_URL || 'https://api.siliconflow.cn/v1',
+      model: process.env.TRANSLAMATE_MODEL || 'deepseek-ai/DeepSeek-V3',
       maxTokens: parseInt(process.env.TRANSLAMATE_MAX_TOKENS || '512', 10),
       temperature: parseFloat(process.env.TRANSLAMATE_TEMPERATURE || '0.3'),
       chunkedTranslation: {

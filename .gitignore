@@ -56,3 +56,4 @@ coverage/
 # Test outputs
 outputs/
 test-dist/
+CHANGELOG.md

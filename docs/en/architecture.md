@@ -75,6 +75,7 @@ core/
 ├── types.ts              # Shared TypeScript definitions
 ├── translation/
 │   ├── engine.ts         # TranslationEngine class
+│   ├── chunked-engine.ts # ChunkedTranslationEngine class
 │   └── index.ts          # Public exports
 ├── batch/
 │   ├── processor.ts      # BatchProcessor class
@@ -86,7 +87,7 @@ core/
 
 ### TranslationEngine
 
-The primary translation service.
+The primary translation service for short texts.
 
 ```typescript
 import { TranslationEngine } from '../core';
@@ -110,6 +111,40 @@ const result = await engine.translate({
 - Prompt construction
 - Error handling
 - Response parsing
+- Token usage tracking
+
+### ChunkedTranslationEngine
+
+Handles long text translation with intelligent chunking and parallel processing.
+
+```typescript
+import { ChunkedTranslationEngine } from '../core';
+
+const engine = new ChunkedTranslationEngine(config);
+
+const result = await engine.translateChunked({
+  text: longDocument,
+  targetLanguage: 'zh-CN',
+  glossary: { /* optional */ },
+  maxTokensPerChunk: 1000,
+  parallelChunks: 3
+}, (progress) => {
+  console.log(`${progress.stage}: ${progress.message}`);
+});
+```
+
+**Responsibilities:**
+- Text splitting into optimal chunks
+- Parallel translation execution
+- Context preservation between chunks
+- Smart merging of translated chunks
+- Progress tracking
+
+**Key Features:**
+- Automatic chunking based on token limits
+- Overlap mechanism for context continuity
+- Configurable parallelism (default: 3 chunks)
+- Glossary integration for terminology consistency
 
 ### BatchProcessor
 
@@ -135,13 +170,14 @@ await processor.processFiles({
 - Directory structure preservation
 - Progress tracking
 - Error recovery
+- Support for both single and chunked translation engines
 
 ### ConfigLoader
 
-Manages configuration from multiple sources.
+Manages configuration from multiple sources with priority resolution.
 
 **Priority Order:**
-1. Explicit config file path
+1. Explicit config file path (`--config <path>`)
 2. `./translamate.json` (current directory)
 3. `~/.translamate.json` (home directory)
 4. Environment variables (`TRANSLAMATE_*`)
@@ -151,6 +187,42 @@ import { loadConfig } from '../core';
 
 // Load with priority resolution
 const config = loadConfig('./custom-config.json');
+```
+
+**Configuration Schema:**
+
+```typescript
+interface TranslationConfig {
+  // API Configuration
+  apiKey: string;
+  baseURL: string;
+  model: string;
+
+  // Translation Parameters
+  maxTokens: number;
+  temperature: number;
+
+  // Chunked Translation (optional)
+  chunkedTranslation?: {
+    enabled?: boolean;
+    maxTokensPerChunk?: number;
+    chunkOverlap?: number;
+    parallelChunks?: number;
+    parallelDocs?: number;
+  };
+
+  // Glossary (optional)
+  glossary?: {
+    path?: string;
+    autoLoad?: boolean;
+    terms?: Record<string, string>;
+  };
+
+  // Thresholds
+  thresholds?: {
+    useChunked: number; // Default: 1000 tokens
+  };
+}
 ```
 
 ---
@@ -183,6 +255,7 @@ cli/
 - **Pure Functions**: Commands are testable functions
 - **Error Handling**: Consistent error messages with exit codes
 - **Progress Output**: Real-time progress for batch operations
+- **Automatic Engine Selection**: Uses chunked translation for texts > 1000 tokens
 
 ---
 
@@ -230,6 +303,7 @@ Renderer Process          Main Process
 - **Thin Main Process**: Main process only handles UI-related concerns (dialogs, shortcuts)
 - **Core Delegation**: All business logic delegated to core module
 - **State Management**: Zustand for renderer state, electron-store for persistent config
+- **Security**: Preload script provides secure API surface
 
 ---
 
@@ -282,6 +356,30 @@ Input Directory
        │      └──> Report progress
        │
        └──> Complete
+```
+
+### Chunked Translation Flow
+
+```
+Long Text
+    │
+    ▼
+┌─────────────────────┐
+│   Text Splitter     │ → Split into chunks with overlap
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Parallel Translator │ → Translate chunks concurrently
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Smart Merger      │ → Merge with boundary smoothing
+└──────────┬──────────┘
+           │
+           ▼
+     Final Result
 ```
 
 ---
@@ -455,6 +553,11 @@ TRANSLAMATE_BASE_URL=https://api.deepseek.com
 TRANSLAMATE_MODEL=deepseek-chat
 TRANSLAMATE_MAX_TOKENS=512
 TRANSLAMATE_TEMPERATURE=0.7
+
+# Chunked Translation
+TRANSLAMATE_MAX_TOKENS_PER_CHUNK=1000
+TRANSLAMATE_CHUNK_OVERLAP=100
+TRANSLAMATE_PARALLEL_CHUNKS=3
 ```
 
 ---
@@ -480,7 +583,8 @@ If you're migrating from the old single-layer architecture:
 
 ## Resources
 
-- [Core Module Documentation](./CORE_MODULE.md)
-- [CLI Guide](./CLI_GUIDE.md)
-- [Development Guide](./DEVELOPMENT.md)
-- [API Documentation](./API.md)
+- [Chunked Translation Engine](./chunked-translation.md)
+- [API Configuration](./api.md)
+- [CLI Guide](./cli.md)
+- [Development Guide](./development.md)
+- [Contributing Guidelines](./contributing.md)

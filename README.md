@@ -7,7 +7,7 @@
 **AI-Powered Desktop / CLI Translation Application**
 
 [![GitHub release](https://img.shields.io/github/v/release/sanbuphy/translamate?style=flat-square)](https://github.com/sanbuphy/translamate/releases)
-[![License](https://img.shields.io/github/license/sanbuphy/translamate?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/sanbuphy/translamate/build.yml?style=flat-square)](https://github.com/sanbuphy/translamate/actions)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-blue?style=flat-square)](https://nodejs.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=flat-square)]()
@@ -271,15 +271,49 @@ npm run build:all
 
 ---
 
-## Documentation
+## Documentation 📚
 
-- [Quick Start Guide](docs/QUICKSTART.md) - Get started in 5 minutes
-- [CLI Documentation](docs/CLI.md) - Complete CLI reference
-- [API Reference](docs/API.md) - API configuration guide
-- [Development Guide](docs/DEVELOPMENT.md) - Contributing and development
-- [Deployment Guide](docs/DEPLOYMENT.md) - Server deployment
-- [Architecture](docs/ARCHITECTURE.md) - System architecture
-- [Contributing](docs/CONTRIBUTING.md) - Contribution guidelines
+TranslaMate provides comprehensive bilingual documentation. Choose your preferred language:
+
+### Chinese Documentation (中文文档)
+
+| Document | Description |
+|----------|-------------|
+| [快速开始](docs/zh/quickstart.md) | 5分钟快速上手指南 |
+| [CLI 参考](docs/zh/cli.md) | 完整命令行接口参考 |
+| [API 配置](docs/zh/api.md) | API 配置与使用指南 |
+| [开发指南](docs/zh/development.md) | 贡献与开发说明 |
+| [术语表](docs/zh/glossary.md) | 术语表使用与最佳实践 |
+| [部署指南](docs/zh/deployment.md) | 服务器部署说明 |
+| [构建验证](docs/zh/build-verification.md) | 构建验证检查清单 |
+| [架构设计](docs/zh/architecture.md) | 系统架构详解（含分块翻译技术） |
+| [翻译代理](docs/zh/translation-agent.md) | 多提供商配置 |
+| [贡献指南](docs/zh/contributing.md) | 贡献规范与流程 |
+
+### English Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Quick Start](docs/en/quickstart.md) | Get started in 5 minutes |
+| [CLI Reference](docs/en/cli.md) | Complete command-line interface reference |
+| [API Configuration](docs/en/api.md) | API configuration and usage guide |
+| [Development Guide](docs/en/development.md) | Contributing and development notes |
+| [Glossary](docs/en/glossary.md) | Glossary usage and best practices |
+| [Deployment Guide](docs/en/deployment.md) | Server deployment instructions |
+| [Build Verification](docs/en/build-verification.md) | Build verification checklist |
+| [Architecture](docs/en/architecture.md) | System architecture overview (includes chunked translation) |
+| [Translation Agent](docs/en/translation-agent.md) | Multi-provider configuration |
+| [Contributing](docs/en/contributing.md) | Contribution guidelines and process |
+
+### Getting Started Path
+
+**New users?** Start with: [Quick Start Guide](docs/zh/quickstart.md) | [Quick Start](docs/en/quickstart.md)
+
+**CLI users?** See: [CLI Reference](docs/zh/cli.md) | [CLI Reference](docs/en/cli.md)
+
+**Developers?** Read: [Development Guide](docs/zh/development.md) | [Development Guide](docs/en/development.md)
+
+**Deployment?** Check: [Deployment Guide](docs/zh/deployment.md) | [Deployment Guide](docs/en/deployment.md)
 
 ---
 

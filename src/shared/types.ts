@@ -68,6 +68,14 @@ export interface ChunkedTranslationRequest {
 export interface TranslationResult {
   text: string;
   sourceLang?: string;
+  usage?: TokenUsage;
+}
+
+// Token 使用统计
+export interface TokenUsage {
+  promptTokens: number;      // 输入 token 数
+  completionTokens: number;  // 输出 token 数
+  totalTokens: number;       // 总 token 数
 }
 
 // 翻译进度

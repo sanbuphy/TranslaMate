@@ -8,6 +8,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
+import { splitTextIntoChunks } from '../src/core/translation/chunked-engine';
 
 // 确保 outputs 目录存在
 const OUTPUTS_DIR = path.join(__dirname, '..', 'outputs');
@@ -24,94 +25,6 @@ const client = new OpenAI({
   apiKey: DEEPSEEK_API_KEY,
   baseURL: DEEPSEEK_BASE_URL,
 });
-
-// 文本分块函数
-function splitTextIntoChunks(text: string, maxTokens: number, overlap: number): string[] {
-  const chunks: string[] = [];
-  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0);
-
-  let currentChunk = '';
-  let currentTokens = 0;
-
-  for (const paragraph of paragraphs) {
-    const paragraphTokens = estimateTokens(paragraph);
-
-    if (paragraphTokens > maxTokens) {
-      if (currentChunk.length > 0) {
-        chunks.push(currentChunk.trim());
-        currentChunk = '';
-        currentTokens = 0;
-      }
-
-      const sentences = splitIntoSentences(paragraph);
-      for (const sentence of sentences) {
-        const sentenceTokens = estimateTokens(sentence);
-
-        if (currentTokens + sentenceTokens > maxTokens && currentChunk.length > 0) {
-          chunks.push(currentChunk.trim());
-          const overlapText = getOverlapText(currentChunk, overlap);
-          currentChunk = overlapText + sentence + '\n\n';
-          currentTokens = estimateTokens(currentChunk);
-        } else {
-          currentChunk += sentence + '\n\n';
-          currentTokens += sentenceTokens;
-        }
-      }
-    } else {
-      if (currentTokens + paragraphTokens > maxTokens && currentChunk.length > 0) {
-        chunks.push(currentChunk.trim());
-        const overlapText = getOverlapText(currentChunk, overlap);
-        currentChunk = overlapText + paragraph + '\n\n';
-        currentTokens = estimateTokens(currentChunk);
-      } else {
-        currentChunk += paragraph + '\n\n';
-        currentTokens += paragraphTokens;
-      }
-    }
-  }
-
-  if (currentChunk.length > 0) {
-    chunks.push(currentChunk.trim());
-  }
-
-  return chunks;
-}
-
-function splitIntoSentences(text: string): string[] {
-  const sentences = text
-    .replace(/([.!?。！？])(\s+|$)/g, '$1\n')
-    .split('\n')
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
-  return sentences.length > 0 ? sentences : [text];
-}
-
-function getOverlapText(text: string, overlapTokens: number): string {
-  const sentences = splitIntoSentences(text);
-  let overlapText = '';
-  let tokens = 0;
-
-  for (let i = sentences.length - 1; i >= 0; i--) {
-    const sentence = sentences[i];
-    const sentenceTokens = estimateTokens(sentence);
-
-    if (tokens + sentenceTokens > overlapTokens) {
-      break;
-    }
-
-    overlapText = sentence + ' ' + overlapText;
-    tokens += sentenceTokens;
-  }
-
-  return overlapText;
-}
-
-function estimateTokens(text: string): number {
-  const cjkChars = (text.match(/[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g) || []).length;
-  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
-  const otherChars = text.length - cjkChars - englishWords;
-  return Math.ceil(cjkChars + englishWords * 0.75 + otherChars * 0.25);
-}
 
 // 翻译单个分块
 async function translateChunk(chunk: string, index: number, total: number): Promise<string> {
@@ -211,11 +124,11 @@ async function runTest() {
 
   // 读取测试文章
   const testContent = fs.readFileSync(
-    path.join(__dirname, 'test-article.md'),
+    path.join(__dirname, 'data.ai-article.md'),
     'utf-8'
   );
 
-  console.log(`测试文件: test/test-article.md`);
+  console.log(`测试文件: test/data.ai-article.md`);
   console.log(`输出目录: outputs/`);
   console.log(`文件大小: ${testContent.length} 字符`);
   console.log('');

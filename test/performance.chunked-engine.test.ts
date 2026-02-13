@@ -41,7 +41,7 @@ class TranslationPerformanceTest {
     this.config = loadConfig();
     this.engine = new ChunkedTranslationEngine(this.config);
     this.testContent = fs.readFileSync(
-      path.join(__dirname, 'test-article.md'),
+      path.join(__dirname, 'data.ai-article.md'),
       'utf-8'
     );
   }
@@ -223,7 +223,7 @@ class TranslationPerformanceTest {
     console.log('║              TranslaMate 翻译性能测试                      ║');
     console.log('╚════════════════════════════════════════════════════════════╝');
     console.log('');
-    console.log(`测试文件: test-article.md`);
+    console.log(`测试文件: data.ai-article.md`);
     console.log(`文件大小: ${this.testContent.length} 字符`);
     console.log(`目标语言: English`);
     console.log(`分块大小: 800 tokens`);

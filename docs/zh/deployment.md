@@ -1,82 +1,82 @@
-# Deployment Guide
+# 部署指南
 
-Guide for deploying TranslaMate CLI on servers and cloud platforms.
+本指南介绍如何在服务器和云平台上部署 TranslaMate CLI。
 
-## Table of Contents
+## 目录
 
-- [Overview](#overview)
-- [System Requirements](#system-requirements)
-- [Installation](#installation)
-- [Docker Deployment](#docker-deployment)
-- [Cloud Platforms](#cloud-platforms)
-- [Server Configuration](#server-configuration)
-- [Monitoring](#monitoring)
-- [Security](#security)
-
----
-
-## Overview
-
-TranslaMate CLI can be deployed on servers for:
-- Automated translation workflows
-- API service backend
-- Batch processing jobs
-- CI/CD integration
+- [概述](#概述)
+- [系统要求](#系统要求)
+- [安装](#安装)
+- [Docker 部署](#docker-部署)
+- [云平台](#云平台)
+- [服务器配置](#服务器配置)
+- [监控](#监控)
+- [安全性](#安全性)
 
 ---
 
-## System Requirements
+## 概述
 
-### Minimum Requirements
-
-- **OS**: Linux (Ubuntu 20.04+), macOS 12+, Windows Server 2019+
-- **Node.js**: 18.x or higher
-- **RAM**: 512 MB minimum, 1 GB recommended
-- **Disk**: 100 MB for application, additional space for files
-- **Network**: Outbound HTTPS access to API provider
-
-### Recommended Specifications
-
-- **CPU**: 2+ cores for concurrent processing
-- **RAM**: 2 GB for batch processing large files
-- **Disk**: SSD for better I/O performance
+TranslaMate CLI 可以部署在服务器上用于：
+- 自动化翻译工作流
+- API 服务后端
+- 批量处理任务
+- CI/CD 集成
 
 ---
 
-## Installation
+## 系统要求
+
+### 最低要求
+
+- **操作系统**：Linux (Ubuntu 20.04+)、macOS 12+、Windows Server 2019+
+- **Node.js**：18.x 或更高版本
+- **内存**：最低 512 MB，推荐 1 GB
+- **磁盘**：应用程序 100 MB，额外空间用于文件存储
+- **网络**：出站 HTTPS 访问 API 提供商
+
+### 推荐配置
+
+- **CPU**：2+ 核心用于并发处理
+- **内存**：2 GB 用于批量处理大文件
+- **磁盘**：SSD 以获得更好的 I/O 性能
+
+---
+
+## 安装
 
 ### Ubuntu/Debian
 
 ```bash
-# Update system
+# 更新系统
 sudo apt update && sudo apt upgrade -y
 
-# Install Node.js 18.x
+# 安装 Node.js 18.x
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-# Verify installation
+# 验证安装
 node --version  # v18.x.x
 npm --version   # 9.x.x
 
-# Create app directory
+# 创建应用目录
 sudo mkdir -p /opt/translamate
 sudo chown $USER:$USER /opt/translamate
 cd /opt/translamate
 
-# Clone repository
+# 克隆仓库
 git clone https://github.com/username/translamate.git .
 
-# Install dependencies
+# 安装依赖
 npm ci --only=production
 
-# Build CLI
+# 构建 CLI
 npm run build:cli
 
-# Create config directory
+# 创建配置目录
 mkdir -p /etc/translamate
 
-# Set up environment variables
+# 设置环境变量
 sudo tee /etc/translamate/env << EOF
 TRANSLAMATE_API_KEY=your-api-key-here
 TRANSLAMATE_BASE_URL=https://api.deepseek.com
@@ -89,33 +89,33 @@ sudo chmod 600 /etc/translamate/env
 ### CentOS/RHEL
 
 ```bash
-# Install Node.js 18.x
+# 安装 Node.js 18.x
 curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
 sudo yum install -y nodejs
 
-# Remaining steps same as Ubuntu
+# 其余步骤与 Ubuntu 相同
 ```
 
 ### macOS
 
 ```bash
-# Install Homebrew if not present
+# 如果未安装 Homebrew 则安装
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install Node.js
+# 安装 Node.js
 brew install node@18
 
-# Remaining steps same as Ubuntu
+# 其余步骤与 Ubuntu 相同
 ```
 
 ---
 
-## Docker Deployment
+## Docker 部署
 
 ### Dockerfile
 
 ```dockerfile
-# Build stage
+# 构建阶段
 FROM node:18-alpine AS builder
 
 WORKDIR /app
@@ -125,25 +125,25 @@ RUN npm ci
 COPY . .
 RUN npm run build:cli
 
-# Production stage
+# 生产阶段
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy only necessary files
+# 仅复制必要文件
 COPY --from=builder /app/dist/cli ./dist/cli
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 
-# Create non-root user
+# 创建非 root 用户
 RUN addgroup -g 1001 -S translamate && \
     adduser -S translamate -u 1001
 
-# Set environment
+# 设置环境
 ENV NODE_ENV=production
 ENV TRANSLAMATE_CONFIG_PATH=/app/config.json
 
-# Create config directory
+# 创建配置目录
 RUN mkdir -p /app/data && chown -R translamate:translamate /app
 
 USER translamate
@@ -152,19 +152,19 @@ ENTRYPOINT ["node", "dist/cli/index.js"]
 CMD ["--help"]
 ```
 
-### Build and Run
+### 构建和运行
 
 ```bash
-# Build image
+# 构建镜像
 docker build -t translamate:latest .
 
-# Run with environment variables
+# 使用环境变量运行
 docker run -e TRANSLAMATE_API_KEY=sk-xxx translamate translate "Hello" --to zh-CN
 
-# Run with config file
+# 使用配置文件运行
 docker run -v $(pwd)/config.json:/app/config.json translamate batch /data --to zh-CN
 
-# Run interactively
+# 交互式运行
 docker run -it --rm translamate /bin/sh
 ```
 
@@ -189,18 +189,18 @@ services:
 ```
 
 ```bash
-# Run with docker-compose
+# 使用 docker-compose 运行
 docker-compose up
 ```
 
 ---
 
-## Cloud Platforms
+## 云平台
 
 ### AWS EC2
 
 ```bash
-# User data script for EC2 instance
+# EC2 实例的用户数据脚本
 #!/bin/bash
 apt-get update
 apt-get install -y nodejs npm git
@@ -211,7 +211,7 @@ git clone https://github.com/username/translamate.git .
 npm ci --only=production
 npm run build:cli
 
-# Create systemd service
+# 创建 systemd 服务
 cat > /etc/systemd/system/translamate.service << 'EOF'
 [Unit]
 Description=TranslaMate Translation Service
@@ -261,10 +261,10 @@ steps:
 ### Azure Container Instances
 
 ```bash
-# Create resource group
+# 创建资源组
 az group create --name translamate-rg --location eastus
 
-# Create container
+# 创建容器
 az container create \
   --resource-group translamate-rg \
   --name translamate \
@@ -274,21 +274,21 @@ az container create \
   --memory 1
 ```
 
-### Alibaba Cloud ECS
+### 阿里云 ECS
 
 ```bash
-# Similar to AWS EC2
-# Use Alibaba Cloud Linux or CentOS
+# 类似于 AWS EC2
+# 使用阿里云 Linux 或 CentOS
 
 yum install -y nodejs git
-# Follow same installation steps as CentOS
+# 遵循与 CentOS 相同的安装步骤
 ```
 
 ---
 
-## Server Configuration
+## 服务器配置
 
-### Systemd Service
+### Systemd 服务
 
 ```ini
 # /etc/systemd/system/translamate.service
@@ -312,30 +312,30 @@ WantedBy=multi-user.target
 ```
 
 ```bash
-# Enable and start service
+# 启用并启动服务
 sudo systemctl daemon-reload
 sudo systemctl enable translamate
 sudo systemctl start translamate
 
-# Check status
+# 检查状态
 sudo systemctl status translamate
 sudo journalctl -u translamate -f
 ```
 
-### Cron Job
+### 定时任务
 
 ```bash
-# Edit crontab
+# 编辑 crontab
 crontab -e
 
-# Run translation every hour
+# 每小时运行翻译
 0 * * * * cd /opt/translamate && /usr/bin/node dist/cli/index.js batch /data/inbox --to zh-CN --output /data/outbox >> /var/log/translamate.log 2>&1
 
-# Run daily at 2 AM
+# 每天凌晨 2 点运行
 0 2 * * * cd /opt/translamate && /usr/bin/node dist/cli/index.js batch /data/daily --to ja --output /data/daily-ja
 ```
 
-### Log Rotation
+### 日志轮转
 
 ```bash
 # /etc/logrotate.d/translamate
@@ -352,9 +352,9 @@ crontab -e
 
 ---
 
-## Monitoring
+## 监控
 
-### Health Check Script
+### 健康检查脚本
 
 ```bash
 #!/bin/bash
@@ -371,16 +371,16 @@ else
 fi
 ```
 
-### Prometheus Metrics (Example)
+### Prometheus 指标（示例）
 
 ```javascript
-// metrics.js - Simple metrics endpoint
+// metrics.js - 简单指标端点
 const http = require('http');
 const { execSync } = require('child_process');
 
 const server = http.createServer((req, res) => {
   if (req.url === '/metrics') {
-    // Get translation count from logs
+    // 从日志获取翻译计数
     const count = execSync('grep -c "Translation completed" /var/log/translamate.log 2>/dev/null || echo 0').toString().trim();
     
     res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -394,25 +394,25 @@ const server = http.createServer((req, res) => {
 server.listen(9090);
 ```
 
-### Monitoring Checklist
+### 监控检查清单
 
-- [ ] Disk space usage
-- [ ] API quota/usage
-- [ ] Error rates
-- [ ] Processing time
-- [ ] Queue depth (if using message queue)
+- [ ] 磁盘空间使用情况
+- [ ] API 配额/使用量
+- [ ] 错误率
+- [ ] 处理时间
+- [ ] 队列深度（如果使用消息队列）
 
 ---
 
-## Security
+## 安全性
 
-### API Key Management
+### API 密钥管理
 
 ```bash
-# Use environment variables (recommended)
+# 使用环境变量（推荐）
 export TRANSLAMATE_API_KEY=$(cat /etc/secrets/api-key)
 
-# Or use a secrets manager
+# 或使用密钥管理器
 # AWS Secrets Manager
 export TRANSLAMATE_API_KEY=$(aws secretsmanager get-secret-value --secret-id translamate/api-key --query SecretString --output text)
 
@@ -420,106 +420,106 @@ export TRANSLAMATE_API_KEY=$(aws secretsmanager get-secret-value --secret-id tra
 export TRANSLAMATE_API_KEY=$(az keyvault secret show --name api-key --vault-name translamate-vault --query value -o tsv)
 ```
 
-### File Permissions
+### 文件权限
 
 ```bash
-# Set correct permissions
+# 设置正确的权限
 sudo chown -R translamate:translamate /opt/translamate
 sudo chmod 750 /opt/translamate
 sudo chmod 600 /etc/translamate/env
 
-# Secure data directories
+# 保护数据目录
 sudo mkdir -p /data/translamate
 sudo chown translamate:translamate /data/translamate
 sudo chmod 700 /data/translamate
 ```
 
-### Network Security
+### 网络安全
 
 ```bash
-# Firewall rules (ufw)
+# 防火墙规则（ufw）
 sudo ufw default deny incoming
 sudo ufw allow ssh
-sudo ufw allow from 10.0.0.0/8 to any port 443  # Internal network only
+sudo ufw allow from 10.0.0.0/8 to any port 443  # 仅内部网络
 sudo ufw enable
 
-# Or iptables
+# 或使用 iptables
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 443 -s 10.0.0.0/8 -j ACCEPT
 sudo iptables -A INPUT -j DROP
 ```
 
-### Security Checklist
+### 安全检查清单
 
-- [ ] API keys stored securely (not in code)
-- [ ] File permissions set correctly
-- [ ] Regular security updates
-- [ ] Network access restricted
-- [ ] Logs monitored for anomalies
-- [ ] Backup strategy in place
+- [ ] API 密钥安全存储（不在代码中）
+- [ ] 文件权限设置正确
+- [ ] 定期安全更新
+- [ ] 网络访问受限
+- [ ] 监控日志异常
+- [ ] 备份策略到位
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-#### Permission Denied
+#### 权限被拒绝
 
 ```bash
-# Fix permissions
+# 修复权限
 sudo chown -R $(whoami):$(whoami) /opt/translamate
 chmod +x /opt/translamate/dist/cli/index.js
 ```
 
-#### Out of Memory
+#### 内存不足
 
 ```bash
-# Increase Node.js memory limit
+# 增加 Node.js 内存限制
 export NODE_OPTIONS="--max-old-space-size=4096"
 node dist/cli/index.js batch large-directory --to zh-CN
 ```
 
-#### API Timeouts
+#### API 超时
 
 ```bash
-# Check network connectivity
+# 检查网络连接
 curl -I https://api.deepseek.com
 
-# Check DNS resolution
+# 检查 DNS 解析
 nslookup api.deepseek.com
 
-# Review firewall rules
+# 查看防火墙规则
 sudo iptables -L -n | grep 443
 ```
 
-### Debug Mode
+### 调试模式
 
 ```bash
-# Enable debug logging
+# 启用调试日志
 export DEBUG=translamate:*
 node dist/cli/index.js translate "test" --to zh-CN
 ```
 
 ---
 
-## Performance Tuning
+## 性能调优
 
-### Concurrent Processing
+### 并发处理
 
 ```bash
-# Process multiple files concurrently
+# 并发处理多个文件
 find /data/input -name "*.md" -print0 | xargs -0 -P 4 -I {} \
   node dist/cli/index.js translate {} --to zh-CN --output /data/output/{}
 ```
 
-### Caching
+### 缓存
 
 ```bash
-# Use Redis for caching translations
-# Install: npm install redis
+# 使用 Redis 缓存翻译结果
+# 安装：npm install redis
 
-# Cache script example
+# 缓存脚本示例
 #!/bin/bash
 CACHE_KEY=$(echo "$1$2" | md5sum | cut -d' ' -f1)
 CACHED=$(redis-cli GET "$CACHE_KEY")
@@ -535,9 +535,9 @@ fi
 
 ---
 
-## Backup and Recovery
+## 备份和恢复
 
-### Backup Script
+### 备份脚本
 
 ```bash
 #!/bin/bash
@@ -546,24 +546,24 @@ fi
 BACKUP_DIR="/backup/translamate/$(date +%Y%m%d)"
 mkdir -p "$BACKUP_DIR"
 
-# Backup configuration
+# 备份配置
 cp /etc/translamate/env "$BACKUP_DIR/"
 cp -r /opt/translamate/config "$BACKUP_DIR/"
 
-# Backup data
+# 备份数据
 tar czf "$BACKUP_DIR/data.tar.gz" /data/translamate
 
-# Upload to S3 (optional)
+# 上传到 S3（可选）
 aws s3 sync "$BACKUP_DIR" s3://your-bucket/translamate-backups/
 
-# Clean old backups
+# 清理旧备份
 find /backup/translamate -type d -mtime +30 -exec rm -rf {} +
 ```
 
-### Recovery
+### 恢复
 
 ```bash
-# Restore from backup
+# 从备份恢复
 sudo systemctl stop translamate
 sudo cp /backup/translamate/20240101/env /etc/translamate/
 sudo tar xzf /backup/translamate/20240101/data.tar.gz -C /

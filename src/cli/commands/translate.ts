@@ -44,20 +44,18 @@ function displayProgress(progress: TranslationProgress): void {
   const percentage = progress.totalChunks > 0
     ? Math.round((progress.currentChunk / progress.totalChunks) * 100)
     : 0;
-  
+
   const barLength = 30;
   const filledLength = Math.round((percentage / 100) * barLength);
   const bar = '█'.repeat(filledLength) + '░'.repeat(barLength - filledLength);
-  
-  process.stdout.clearLine(0);
-  process.stdout.cursorTo(0);
-  process.stdout.write(`[${bar}] ${percentage}% | ${progress.stage}: ${progress.message}`);
+
+  // 使用 \r 返回行首覆盖旧内容
+  process.stdout.write('\r' + `[${bar}] ${percentage}% | ${progress.stage}: ${progress.message}`);
 }
 
 // 清除进度条
 function clearProgress(): void {
-  process.stdout.clearLine(0);
-  process.stdout.cursorTo(0);
+  process.stdout.write('\r' + ' '.repeat(80) + '\r');
 }
 
 export async function translateCommand(input: string, options: TranslateOptions): Promise<void> {
@@ -136,7 +134,16 @@ async function translateTextChunked(text: string, options: TranslateOptions, con
   );
 
   clearProgress();
-  console.log(`\nTranslation completed: ${result.chunks} chunks, ~${result.totalTokens} tokens`);
+
+  // 显示 token 使用信息
+  if (result.totalUsage) {
+    console.log(`\nToken 使用:`);
+    console.log(`  输入: ${result.totalUsage.promptTokens?.toLocaleString()} tokens`);
+    console.log(`  输出: ${result.totalUsage.completionTokens?.toLocaleString()} tokens`);
+    console.log(`  总计: ${result.totalUsage.totalTokens?.toLocaleString()} tokens`);
+  }
+
+  console.log(`\n翻译完成: ${result.chunks} chunks, ~${result.totalTokens} tokens`);
   console.log('\n' + result.text);
 }
 
@@ -186,6 +193,14 @@ async function translateFileBasic(
     targetLanguage: options.to,
   });
 
+  // 显示 token 使用信息
+  if (result.usage) {
+    console.log(`\nToken 使用:`);
+    console.log(`  输入: ${result.usage.promptTokens?.toLocaleString()} tokens`);
+    console.log(`  输出: ${result.usage.completionTokens?.toLocaleString()} tokens`);
+    console.log(`  总计: ${result.usage.totalTokens?.toLocaleString()} tokens`);
+  }
+
   fs.writeFileSync(outputPath, result.text, 'utf-8');
 }
 
@@ -222,7 +237,16 @@ async function translateFileChunked(
   );
 
   clearProgress();
-  console.log(`Translation completed: ${result.chunks} chunks, ~${result.totalTokens} tokens`);
+
+  // 显示 token 使用信息
+  if (result.totalUsage) {
+    console.log(`\nToken 使用:`);
+    console.log(`  输入: ${result.totalUsage.promptTokens?.toLocaleString()} tokens`);
+    console.log(`  输出: ${result.totalUsage.completionTokens?.toLocaleString()} tokens`);
+    console.log(`  总计: ${result.totalUsage.totalTokens?.toLocaleString()} tokens`);
+  }
+
+  console.log(`\nTranslation completed: ${result.chunks} chunks, ~${result.totalTokens} tokens`);
 
   fs.writeFileSync(outputPath, result.text, 'utf-8');
 }

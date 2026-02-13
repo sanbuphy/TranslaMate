@@ -139,8 +139,8 @@ npm run build:all
 ## Next Steps
 
 - Read the full [Documentation](../README.md)
-- Check [Development Guide](DEVELOPMENT.md) if you want to contribute
-- Review [API Documentation](API.md) for technical details
+- Check [Development Guide](development.md) if you want to contribute
+- Review [API Documentation](api.md) for technical details
 
 ## Support
 

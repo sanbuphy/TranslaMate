@@ -202,9 +202,53 @@ translamate config reset
 
 ---
 
-## Configuration
+## Testing
 
-### Configuration File
+### Run Tests
+```bash
+# Run all tests
+npm test
+
+# Run unit tests only
+npm run test:unit
+
+# Run performance tests (requires API key)
+npm run test:performance
+```
+
+### Translation Verification Tests
+```bash
+# Translate test document to English
+npm run test:translate:en
+
+# Translate test document to Traditional Chinese
+npm run test:translate:zh-tw
+
+# Translate test document to Japanese
+npm run test:translate:ja
+
+# Run all translation tests
+npm run test:translate:all
+```
+
+**Note:** Translation tests require a valid API key to be configured in `.translamate.json` or via environment variables.
+
+### Unit Test Details
+
+The unit test suite validates:
+- Chunking algorithm for text segmentation
+- Token estimation accuracy
+- Sentence splitting for CJK and Latin languages
+- Content preservation through chunking
+
+**Expected Results:**
+- All 9 tests pass
+- No failures
+- Exit code: 0
+
+---
+
+## Configuration
 
 CLI looks for configuration in the following order:
 

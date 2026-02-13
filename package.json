@@ -7,7 +7,7 @@
     "translamate": "dist/cli/index.js"
   },
   "author": "TranslaMate Team",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,13 @@
     "build:all": "npm run build && electron-builder --win --mac --linux",
     "build:ci": "npm run build && electron-builder --publish=never",
     "cli": "npm run build:cli && node dist/cli/index.js",
+    "test": "npm run test:unit && npm run test:performance",
+    "test:unit": "tsx test/unit.chunking-algorithm.test.ts",
+    "test:performance": "tsx test/performance.chunked-engine.test.ts",
+    "test:translate:en": "npm run build:cli && node dist/cli/index.js translate test/data.ai-article.md --to en --output outputs/translated-en.md",
+    "test:translate:zh-tw": "npm run build:cli && node dist/cli/index.js translate test/data.ai-article.md --to zh-TW --output outputs/translated-zh-tw.md",
+    "test:translate:ja": "npm run build:cli && node dist/cli/index.js translate test/data.ai-article.md --to ja --output outputs/translated-ja.md",
+    "test:translate:all": "npm run test:translate:en && npm run test:translate:zh-tw && npm run test:translate:ja",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\"",
     "typecheck": "tsc --noEmit",
@@ -31,18 +38,18 @@
     "version:major": "npm version major && npm run release"
   },
   "dependencies": {
+    "commander": "^12.1.0",
+    "electron-store": "^10.0.0",
+    "lucide-react": "^0.468.0",
+    "openai": "^4.77.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "openai": "^4.77.0",
-    "electron-store": "^10.0.0",
-    "zustand": "^5.0.2",
-    "lucide-react": "^0.468.0",
-    "commander": "^12.1.0"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "@vitejs/plugin-react": "^4.3.4",
@@ -56,6 +63,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
     "vite-plugin-electron": "^0.29.0",
@@ -78,11 +86,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "icon": "build/icon.icns"
@@ -91,11 +105,16 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "build/icon.ico"
@@ -104,15 +123,21 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "rpm",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "category": "Office",

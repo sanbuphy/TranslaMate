@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import type { TranslationRequest, TranslationConfig, TranslationResult } from '../types';
+import type { TranslationRequest, TranslationConfig, TranslationResult, TokenUsage } from '../types';
 
 export class TranslationEngine {
   private config: TranslationConfig;
@@ -47,9 +47,17 @@ ${request.text}`;
 
       const translatedText = response.choices[0]?.message?.content?.trim() || '';
 
+      // 提取 token 使用信息
+      const usage: TokenUsage | undefined = response.usage ? {
+        promptTokens: response.usage.prompt_tokens,
+        completionTokens: response.usage.completion_tokens,
+        totalTokens: response.usage.total_tokens,
+      } : undefined;
+
       return {
         text: translatedText,
         sourceLang: request.sourceLanguage,
+        usage,
       };
     } catch (error) {
       if (error instanceof OpenAI.APIError) {

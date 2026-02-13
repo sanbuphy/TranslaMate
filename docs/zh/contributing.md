@@ -1,4 +1,4 @@
-# Contributing to TranslaMate
+# 贡献指南
 
 感谢你对 TranslaMate 项目的关注！我们欢迎各种形式的贡献。
 

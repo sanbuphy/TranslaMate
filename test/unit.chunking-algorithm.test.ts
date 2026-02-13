@@ -127,8 +127,9 @@ function getOverlapText(text: string, overlapTokens: number): string {
 function estimateTokens(text: string): number {
   const cjkChars = (text.match(/[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g) || []).length;
   const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
-  const otherChars = text.length - cjkChars - englishWords;
-  return Math.ceil(cjkChars + englishWords * 0.75 + otherChars * 0.25);
+  const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
+  const otherChars = text.length - cjkChars - englishChars;
+  return Math.ceil(cjkChars + englishWords + otherChars * 0.25);
 }
 
 describe('分块算法', () => {
